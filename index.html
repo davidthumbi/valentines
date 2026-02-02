@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your 2024 Wrapped</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --spotify-green: #1DB954;
+            --spotify-black: #121212;
+        }
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: var(--spotify-black); 
+            color: white;
+            overflow: hidden; /* Prevent scrolling during the story */
+        }
+        .mono { font-family: 'Space Mono', monospace; }
+        
+        /* Gradient Backgrounds */
+        .bg-gradient-1 { background: linear-gradient(135deg, #0f4c75 0%, #1b262c 100%); }
+        .bg-gradient-2 { background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%); }
+        .bg-gradient-3 { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .bg-gradient-4 { background: linear-gradient(180deg, #af2896 0%, #503291 100%); }
+
+        .slide {
+            display: none;
+            height: 100vh;
+            width: 100%;
+            padding: 2rem;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: fadeIn 0.6s ease-out;
+        }
+        .slide.active { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .progress-container {
+            position: fixed;
+            top: 15px;
+            left: 5%;
+            width: 90%;
+            display: flex;
+            gap: 5px;
+            z-index: 100;
+        }
+        .progress-bar {
+            height: 3px;
+            background: rgba(255,255,255,0.2);
+            flex-grow: 1;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: white;
+            width: 0%;
+            transition: width 0.3s linear;
+        }
+        .progress-fill.completed { width: 100%; }
+
+        .photo-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            transform: rotate(-2deg);
+            transition: transform 0.3s ease;
+        }
+        .photo-card:hover { transform: rotate(0deg) scale(1.02); }
+
+        #yes-button { z-index: 50; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        #no-button { z-index: 40; }
+
+        .btn-next {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: white;
+            color: black;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PROGRESS BARS -->
+    <div class="progress-container">
+        <div class="progress-bar"><div class="progress-fill" id="fill-0"></div></div>
+        <div class="progress-bar"><div class="progress-fill" id="fill-1"></div></div>
+        <div class="progress-bar"><div class="progress-fill" id="fill-2"></div></div>
+        <div class="progress-bar"><div class="progress-fill" id="fill-3"></div></div>
+        <div class="progress-bar"><div class="progress-fill" id="fill-4"></div></div>
+    </div>
+
+    <!-- LOADER -->
+    <div id="loader" class="fixed inset-0 bg-black z-[200] flex items-center justify-center p-6">
+        <div class="mono text-green-500 text-sm md:text-base max-w-md">
+            <p id="loading-text"></p>
+            <span class="animate-pulse">_</span>
+        </div>
+    </div>
+
+    <!-- SLIDE 1: INTRO -->
+    <section class="slide bg-gradient-1 active" id="slide-0">
+        <h2 class="text-green-400 font-bold tracking-widest uppercase mb-4">2024 Recap</h2>
+        <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-6">You really spent a lot of time with one person.</h1>
+        <p class="text-xl opacity-80">Can you guess who?</p>
+    </section>
+
+    <!-- SLIDE 2: THE NUMBERS -->
+    <section class="slide bg-gradient-2" id="slide-1">
+        <div class="photo-card mb-8">
+            <img src="https://via.placeholder.com/300x350?text=Us+Memory+1" alt="Us" class="rounded-lg w-64 h-80 object-cover">
+        </div>
+        <h2 class="text-xl font-bold uppercase">That's right.</h2>
+        <h1 class="text-6xl font-black my-2">365+ Days</h1>
+        <p class="text-xl">of being my absolute favorite human.</p>
+    </section>
+
+    <!-- SLIDE 3: TOP ARTIST -->
+    <section class="slide bg-gradient-3" id="slide-2">
+        <h2 class="text-sm font-bold uppercase tracking-widest mb-10">Your Top Priority</h2>
+        <div class="relative">
+            <div class="w-48 h-48 rounded-full bg-white/20 absolute -inset-4 animate-ping"></div>
+            <img src="https://via.placeholder.com/200?text=You" alt="You" class="relative w-48 h-48 rounded-full border-4 border-white shadow-2xl object-cover">
+        </div>
+        <h1 class="text-5xl font-black mt-10">#1 Top Artist</h1>
+        <p class="text-xl mt-2 opacity-90">You played on my heartstrings all year long.</p>
+    </section>
+
+    <!-- SLIDE 4: THE QUESTION -->
+    <section class="slide bg-gradient-4" id="slide-3">
+        <h1 id="question-text" class="text-5xl md:text-7xl font-black mb-12 tracking-tighter">Will you be my Valentine?</h1>
+        
+        <div id="button-group" class="flex flex-col md:flex-row gap-6 items-center justify-center">
+            <button id="yes-button" onclick="celebrate()" class="bg-white text-black px-12 py-4 rounded-full font-bold text-2xl shadow-xl hover:scale-105">
+                YES
+            </button>
+            <button id="no-button" onmouseover="moveNo()" onclick="moveNo()" class="bg-transparent border-2 border-white/50 text-white px-8 py-4 rounded-full font-bold text-lg">
+                No
+            </button>
+        </div>
+    </section>
+
+    <!-- SLIDE 5: SUCCESS -->
+    <section class="slide bg-green-600" id="slide-4">
+        <h1 class="text-7xl font-black mb-4 animate-bounce">YES! ❤️</h1>
+        <p class="text-2xl mb-8 font-medium">I've already set the date.</p>
+        
+        <div class="w-full max-w-md rounded-3xl overflow-hidden shadow-2xl border-4 border-white photo-card bg-white p-2">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.0182!2d-122.4194!3d37.7749!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzfCsDQ2JzI5LjYiTiAxMjLCsDI1JzA5LjgiVw!5e0!3m2!1sen!2sus!4v1613000000000!5m2!1sen!2sus" 
+                width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" class="rounded-2xl">
+            </iframe>
+        </div>
+        <div class="mt-8 text-center">
+            <p class="mono text-lg font-bold">FEBRUARY 14, 2025</p>
+            <p class="opacity-80">7:00 PM • Wear something you love.</p>
+        </div>
+    </section>
+
+    <!-- NEXT BUTTON -->
+    <button id="next-btn" class="btn-next" onclick="nextSlide()">Next →</button>
+
+    <script>
+        // --- LOADER LOGIC ---
+        const logs = [
+            "fetching_memories.json...",
+            "analyzing_smile_frequency...",
+            "calculating_heart_beats...",
+            "error: too_many_cute_moments.",
+            "optimizing_feelings...",
+            "ready_to_recap."
+        ];
+
+        let logIndex = 0;
+        const logElement = document.getElementById('loading-text');
+
+        function typeLog() {
+            if (logIndex < logs.length) {
+                logElement.innerHTML += `> ${logs[logIndex]}<br>`;
+                logIndex++;
+                setTimeout(typeLog, 400);
+            } else {
+                setTimeout(() => {
+                    document.getElementById('loader').style.display = 'none';
+                }, 800);
+            }
+        }
+        typeLog();
+
+        // --- SLIDE NAVIGATION ---
+        let currentSlide = 0;
+        const totalSlides = 5;
+
+        function updateProgress() {
+            for (let i = 0; i < totalSlides; i++) {
+                const fill = document.getElementById(`fill-${i}`);
+                if (i < currentSlide) fill.classList.add('completed');
+                else if (i === currentSlide) fill.style.width = '100%';
+                else fill.style.width = '0%';
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < 3) { // Only allow manual next up to the "Ask" slide
+                document.getElementById(`slide-${currentSlide}`).classList.remove('active');
+                currentSlide++;
+                document.getElementById(`slide-${currentSlide}`).classList.add('active');
+                updateProgress();
+            }
+            
+            // Hide next button on the "Ask" slide
+            if (currentSlide === 3) {
+                document.getElementById('next-btn').style.display = 'none';
+            }
+        }
+
+        // --- INTERACTIVE BUTTON LOGIC ---
+        let noClicks = 0;
+        let yesScale = 1;
+
+        function moveNo() {
+            const noBtn = document.getElementById('no-button');
+            const yesBtn = document.getElementById('yes-button');
+            
+            noClicks++;
+
+            // Random move
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+
+            // Grow Yes Button
+            yesScale += 0.4;
+            yesBtn.style.transform = `scale(${yesScale})`;
+
+            // Update text based on "No" attempts
+            const phrases = ["Are you sure?", "Really?", "Think again!", "You're clicking the wrong one!", "Give it a chance!", "Calculated mistake..."];
+            if (noClicks < phrases.length) {
+                document.getElementById('question-text').innerText = phrases[noClicks];
+            }
+
+            // After many attempts, the Yes button covers the screen
+            if (noClicks > 8) {
+                yesBtn.style.width = '100vw';
+                yesBtn.style.height = '100vh';
+                yesBtn.style.position = 'fixed';
+                yesBtn.style.top = '0';
+                yesBtn.style.left = '0';
+                yesBtn.style.borderRadius = '0';
+                yesBtn.style.display = 'flex';
+                yesBtn.style.alignItems = 'center';
+                yesBtn.style.justifyContent = 'center';
+            }
+        }
+
+        function celebrate() {
+            confetti({
+                particleCount: 200,
+                spread: 100,
+                origin: { y: 0.6 },
+                colors: ['#1DB954', '#ffffff', '#ff0000']
+            });
+
+            document.getElementById('slide-3').classList.remove('active');
+            document.getElementById('slide-4').classList.add('active');
+            currentSlide = 4;
+            updateProgress();
+        }
+
+        // Initialize progress
+        updateProgress();
+    </script>
+</body>
+</html>
