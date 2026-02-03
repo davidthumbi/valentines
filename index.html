@@ -1,296 +1,668 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your 2024 Wrapped</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project: BELLA | Dave's Deployment</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Space+Mono&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Mono&family=Sacramento&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        :root {
-            --spotify-green: #1DB954;
-            --spotify-black: #121212;
-        }
-        body { 
-            font-family: 'Montserrat', sans-serif; 
-            background-color: var(--spotify-black); 
-            color: white;
-            overflow: hidden; /* Prevent scrolling during the story */
-        }
-        .mono { font-family: 'Space Mono', monospace; }
-        
-        /* Gradient Backgrounds */
-        .bg-gradient-1 { background: linear-gradient(135deg, #0f4c75 0%, #1b262c 100%); }
-        .bg-gradient-2 { background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%); }
-        .bg-gradient-3 { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
-        .bg-gradient-4 { background: linear-gradient(180deg, #af2896 0%, #503291 100%); }
+      :root {
+        --love-red: #ff4d6d;
+        --love-pink: #ff8fa3;
+        --bg-dark: #0a0a0a;
+      }
 
-        .slide {
-            display: none;
-            height: 100vh;
-            width: 100%;
-            padding: 2rem;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            position: absolute;
-            top: 0;
-            left: 0;
-            animation: fadeIn 0.6s ease-out;
-        }
-        .slide.active { display: flex; }
+      body {
+        font-family: "Sacramento", cursive;
+        background-color: var(--bg-dark);
+        color: white;
+        overflow: hidden;
+        margin: 0;
+        font-size: 1.5rem;
+      }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
+      .mono {
+        font-family: "Space Mono", monospace;
+        font-size: 0.9rem;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: "Sacramento", cursive;
+        font-weight: bold;
+        line-height: 1.2;
+      }
 
-        .progress-container {
-            position: fixed;
-            top: 15px;
-            left: 5%;
-            width: 90%;
-            display: flex;
-            gap: 5px;
-            z-index: 100;
-        }
-        .progress-bar {
-            height: 3px;
-            background: rgba(255,255,255,0.2);
-            flex-grow: 1;
-            border-radius: 2px;
-            overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%;
-            background: white;
-            width: 0%;
-            transition: width 0.3s linear;
-        }
-        .progress-fill.completed { width: 100%; }
+      /* Gradients */
+      .bg-gradient-1 {
+        background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      }
+      .bg-gradient-2 {
+        background: linear-gradient(135deg, #450a0a 0%, #7f1d1d 100%);
+      }
+      .bg-gradient-3 {
+        background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+      }
+      .bg-gradient-4 {
+        background: linear-gradient(135deg, #831843 0%, #db2777 100%);
+      }
 
-        .photo-card {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            padding: 15px;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            transform: rotate(-2deg);
-            transition: transform 0.3s ease;
+      /* Floating Decorations */
+      .floating-container {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+      }
+      .float-item {
+        position: absolute;
+        animation: floatUp 6s linear infinite;
+        opacity: 0;
+      }
+      @keyframes floatUp {
+        0% {
+          transform: translateY(110vh) rotate(0deg) scale(0);
+          opacity: 0;
         }
-        .photo-card:hover { transform: rotate(0deg) scale(1.02); }
-
-        #yes-button { z-index: 50; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        #no-button { z-index: 40; }
-
-        .btn-next {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            background: white;
-            color: black;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 100;
+        50% {
+          opacity: 0.6;
         }
+        100% {
+          transform: translateY(-10vh) rotate(360deg) scale(1.5);
+          opacity: 0;
+        }
+      }
+
+      /* FAILURE GLITCH ANIMATION */
+      .glitch-active {
+        animation: glitchFlash 0.15s infinite;
+      }
+      @keyframes glitchFlash {
+        0% {
+          background: #0a0a0a;
+          transform: translate(0);
+        }
+        20% {
+          background: #450a0a;
+          transform: translate(-5px, 5px);
+        }
+        40% {
+          background: #0a0a0a;
+          transform: translate(-5px, -5px);
+        }
+        60% {
+          background: #7f1d1d;
+          transform: translate(5px, 5px);
+        }
+        80% {
+          background: #0a0a0a;
+          transform: translate(5px, -5px);
+        }
+        100% {
+          background: #000;
+          transform: translate(0);
+        }
+      }
+
+      /* Memory Stack UI */
+      .memory-container {
+        position: relative;
+        width: 280px;
+        height: 350px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .memory-stack {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        perspective: 1000px;
+      }
+      .polaroid {
+        position: absolute;
+        background: white;
+        padding: 12px 12px 40px 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        border: 1px solid #ddd;
+        width: 100%;
+        left: 0;
+        top: 0;
+      }
+      .polaroid img {
+        width: 100%;
+        height: 230px;
+        object-fit: cover;
+        pointer-events: none;
+      }
+      .polaroid span {
+        color: #333;
+        display: block;
+        margin-top: 15px;
+        font-size: 1.6rem;
+        text-align: center;
+      }
+
+      .stack-controls {
+        display: flex;
+        gap: 40px;
+        margin-top: 20px;
+        z-index: 100;
+      }
+      .control-btn {
+        background: white;
+        color: var(--love-red);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        border: none;
+      }
+
+      /* Slides */
+      .slide {
+        display: none;
+        height: 100vh;
+        width: 100%;
+        padding: 2rem;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        position: absolute;
+        z-index: 10;
+      }
+      .slide.active {
+        display: flex;
+        animation: fadeIn 0.8s ease;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      /* Progress Bar */
+      .progress-bar {
+        height: 4px;
+        background: rgba(255, 255, 255, 0.2);
+        flex-grow: 1;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        background: var(--love-red);
+        width: 0%;
+        transition: width 0.4s ease;
+      }
+
+      /* Main Navigation Button */
+      #next-btn {
+        position: fixed;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: white;
+        color: black;
+        padding: 10px 40px;
+        border-radius: 99px;
+        font-size: 1.8rem;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        z-index: 101;
+        cursor: pointer;
+        border: none;
+        white-space: nowrap;
+      }
+
+      @media (max-width: 640px) {
+        body {
+          font-size: 1.3rem;
+        }
+        .memory-container {
+          width: 240px;
+          height: 320px;
+        }
+        #next-btn {
+          width: 85%;
+          font-size: 1.5rem;
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <div class="floating-container" id="decor-bg"></div>
 
-    <!-- PROGRESS BARS -->
-    <div class="progress-container">
-        <div class="progress-bar"><div class="progress-fill" id="fill-0"></div></div>
-        <div class="progress-bar"><div class="progress-fill" id="fill-1"></div></div>
-        <div class="progress-bar"><div class="progress-fill" id="fill-2"></div></div>
-        <div class="progress-bar"><div class="progress-fill" id="fill-3"></div></div>
-        <div class="progress-bar"><div class="progress-fill" id="fill-4"></div></div>
+    <!-- Progress Indicator -->
+    <div
+      class="fixed top-5 left-1/2 -translate-x-1/2 w-[90%] flex gap-2 z-[100]"
+    >
+      <div class="progress-bar">
+        <div class="progress-fill" id="fill-0"></div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="fill-1"></div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="fill-2"></div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="fill-3"></div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="fill-4"></div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="fill-5"></div>
+      </div>
     </div>
 
     <!-- LOADER -->
-    <div id="loader" class="fixed inset-0 bg-black z-[200] flex items-center justify-center p-6">
-        <div class="mono text-green-500 text-sm md:text-base max-w-md">
-            <p id="loading-text"></p>
-            <span class="animate-pulse">_</span>
+    <div
+      id="loader"
+      class="fixed inset-0 z-[200] bg-[#0a0a0a] flex items-center justify-center p-6 text-center"
+    >
+      <div
+        class="bg-black/50 p-6 rounded-lg border border-pink-900/30 max-w-lg w-full"
+      >
+        <div id="loading-text" class="mono text-left mb-4"></div>
+        <div class="text-3xl animate-pulse text-white">
+          ❤️ Accessing Dave's Heart...
         </div>
+      </div>
     </div>
 
-    <!-- SLIDE 1: INTRO -->
+    <!-- SLIDE 0: THE ACCESS -->
     <section class="slide bg-gradient-1 active" id="slide-0">
-        <h2 class="text-green-400 font-bold tracking-widest uppercase mb-4">2024 Recap</h2>
-        <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-6">You really spent a lot of time with one person.</h1>
-        <p class="text-xl opacity-80">Can you guess who?</p>
+      <div class="mono text-pink-500 mb-4 text-sm uppercase tracking-widest">
+        [LOG] Dave + Bella
+      </div>
+      <h1 class="text-6xl md:text-8xl mb-6">Accessing Bella.sys</h1>
+      <p class="text-3xl opacity-90 px-4">
+        Dave has been running a background process for a long time...
+      </p>
     </section>
 
-    <!-- SLIDE 2: THE NUMBERS -->
-    <section class="slide bg-gradient-2" id="slide-1">
-        <div class="photo-card mb-8">
-            <img src="https://via.placeholder.com/300x350?text=Us+Memory+1" alt="Us" class="rounded-lg w-64 h-80 object-cover">
-        </div>
-        <h2 class="text-xl font-bold uppercase">That's right.</h2>
-        <h1 class="text-6xl font-black my-2">365+ Days</h1>
-        <p class="text-xl">of being my absolute favorite human.</p>
+    <!-- SLIDE 1: THE BUG REPORT -->
+    <section class="slide bg-gradient-3" id="slide-1">
+      <h2 class="text-4xl text-red-400 mb-4">Critical Bug Report</h2>
+      <div
+        class="bg-black/40 p-8 rounded-3xl border border-white/10 text-left max-w-md w-full"
+      >
+        <p class="mono text-xs text-yellow-400 mb-2">
+          // Error: Heart_Logic_Conflict
+        </p>
+        <h3 class="text-3xl mb-4">My logic has crashed...</h3>
+        <p class="text-2xl mb-4 leading-snug">
+          As a developer, I usually find solutions. But when it comes to you,
+          Bella, I'm happily stuck in an infinite loop.
+        </p>
+        <ul class="text-sm mono space-y-2 opacity-70 list-disc pl-4">
+          <li>BPM > Stable_Parameters</li>
+          <li>Focus == Permanently_Locked</li>
+        </ul>
+      </div>
     </section>
 
-    <!-- SLIDE 3: TOP ARTIST -->
-    <section class="slide bg-gradient-3" id="slide-2">
-        <h2 class="text-sm font-bold uppercase tracking-widest mb-10">Your Top Priority</h2>
-        <div class="relative">
-            <div class="w-48 h-48 rounded-full bg-white/20 absolute -inset-4 animate-ping"></div>
-            <img src="https://via.placeholder.com/200?text=You" alt="You" class="relative w-48 h-48 rounded-full border-4 border-white shadow-2xl object-cover">
+    <!-- SLIDE 2: THE VITALS -->
+    <section class="slide bg-gradient-2" id="slide-2">
+      <h2 class="text-4xl text-pink-300 mb-10">The Bella Effect</h2>
+      <div
+        class="relative w-full max-w-xs bg-black/60 p-8 rounded-3xl border-2 border-pink-500/30 shadow-2xl"
+      >
+        <div class="flex justify-between items-center mb-6">
+          <span class="mono text-[10px] tracking-widest">EKG ACTIVE</span>
+          <span class="text-red-500 animate-pulse text-2xl">❤️</span>
         </div>
-        <h1 class="text-5xl font-black mt-10">#1 Top Artist</h1>
-        <p class="text-xl mt-2 opacity-90">You played on my heartstrings all year long.</p>
+        <div id="ekg-line" class="h-20 flex items-end gap-1 mb-6">
+          <!-- Bars via JS -->
+        </div>
+        <h1 class="text-7xl mb-2" id="bpm-counter">0</h1>
+        <p class="text-xl uppercase">Dave's Heartbeat</p>
+      </div>
+      <p class="mt-8 text-3xl px-6">
+        You check vitals at the hospital all day, but you're the only one who
+        controls mine.
+      </p>
     </section>
 
-    <!-- SLIDE 4: THE QUESTION -->
-    <section class="slide bg-gradient-4" id="slide-3">
-        <h1 id="question-text" class="text-5xl md:text-7xl font-black mb-12 tracking-tighter">Will you be my Valentine?</h1>
-        
-        <div id="button-group" class="flex flex-col md:flex-row gap-6 items-center justify-center">
-            <button id="yes-button" onclick="celebrate()" class="bg-white text-black px-12 py-4 rounded-full font-bold text-2xl shadow-xl hover:scale-105">
-                YES
-            </button>
-            <button id="no-button" onmouseover="moveNo()" onclick="moveNo()" class="bg-transparent border-2 border-white/50 text-white px-8 py-4 rounded-full font-bold text-lg">
-                No
-            </button>
+    <!-- SLIDE 3: MEMORY CACHE -->
+    <section class="slide bg-gradient-1" id="slide-3">
+      <h2 class="text-4xl mb-6">Our Core Memories</h2>
+      <div class="memory-container">
+        <div class="memory-stack" id="stack">
+          <div class="polaroid">
+            <img
+              src="https://i.postimg.cc/R0nxnCr2/Whats-App-Image-2026-02-03-at-10-06-48.jpg"
+              alt="Memory"
+            />
+            <span>Siamini uko Muranga... ✨</span>
+          </div>
+          <div class="polaroid">
+            <img
+              src="https://i.postimg.cc/VNbPbsyT/Whats-App-Image-2026-02-03-at-10-06-48-(1).jpg"
+              alt="Memory"
+            />
+            <span>Unexpected visit to my aunt.</span>
+          </div>
+          <div class="polaroid">
+            <img
+              src="https://i.postimg.cc/Gpsns30f/Whats-App-Image-2026-02-03-at-10-06-49.jpg"
+              alt="Memory"
+            />
+            <span>Siingii kwa nyumba nisipatwe.</span>
+          </div>
+          <div class="polaroid">
+            <img
+              src="https://i.postimg.cc/hG7R74F3/Whats-App-Image-2026-02-03-at-10-06-49-(1).jpg"
+              alt="Memory"
+            />
+            <span>Hako kachum... ❤️</span>
+          </div>
+          <div class="polaroid">
+            <img
+              src="https://i.postimg.cc/YSmBm2cs/Whats-App-Image-2026-02-03-at-10-06-50.jpg"
+              alt="Memory"
+            />
+            <span>Day ya kuchumiwa kuingia kwa mtaro...</span>
+          </div>
+
+          <div class="polaroid">
+            <img
+              src="https://i.postimg.cc/TPWvW28N/Whats-App-Image-2026-02-03-at-10-08-56.jpg"
+              alt="Memory"
+            />
+            <span>Confused state...</span>
+          </div>
+          <div class="polaroid">
+            <img
+              src="https://i.postimg.cc/s2ZCZfFw/Whats-App-Image-2026-02-03-at-10-08-56-(1).jpg"
+              alt="Memory"
+            />
+            <span>Safari mrefu...</span>
+          </div>
         </div>
+      </div>
+      <div class="stack-controls">
+        <button class="control-btn" onclick="prevCard()">←</button>
+        <button class="control-btn" onclick="nextCard()">→</button>
+      </div>
+      <p
+        class="mt-6 mono text-[10px] opacity-50 uppercase tracking-widest text-white"
+      >
+        Scroll through the fragments...
+      </p>
     </section>
 
-    <!-- SLIDE 5: SUCCESS -->
-    <section class="slide bg-green-600" id="slide-4">
-        <h1 class="text-7xl font-black mb-4 animate-bounce">YES! ❤️</h1>
-        <p class="text-2xl mb-8 font-medium">I've already set the date.</p>
-        
-        <div class="w-full max-w-md rounded-3xl overflow-hidden shadow-2xl border-4 border-white photo-card bg-white p-2">
-            <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.0182!2d-122.4194!3d37.7749!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzfCsDQ2JzI5LjYiTiAxMjLCsDI1JzA5LjgiVw!5e0!3m2!1sen!2sus!4v1613000000000!5m2!1sen!2sus" 
-                width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" class="rounded-2xl">
-            </iframe>
-        </div>
-        <div class="mt-8 text-center">
-            <p class="mono text-lg font-bold">FEBRUARY 14, 2025</p>
-            <p class="opacity-80">7:00 PM • Wear something you love.</p>
-        </div>
+    <!-- SLIDE 4: SYSTEM FAILURE (GLITCH) -->
+    <section class="slide" id="slide-4">
+      <div class="p-6">
+        <h1 class="text-6xl text-red-600 mb-6 drop-shadow-lg">
+          System Failure
+        </h1>
+        <p
+          class="text-4xl text-red-200 bg-red-950/40 p-6 border-4 border-red-600 rounded-2xl"
+        >
+          Critical Error: Life.exe cannot function without a permanent
+          Valentine.
+        </p>
+      </div>
+      <div
+        class="mt-10 mono text-[12px] text-left opacity-60 leading-relaxed px-10"
+      >
+        > Analyzing heart_compatibility... [MATCH]<br />
+        > Accessing kindness_database... [BELLA_FOUND]<br />
+        > dave_heart.status = "Needs_Bella"
+      </div>
     </section>
 
-    <!-- NEXT BUTTON -->
-    <button id="next-btn" class="btn-next" onclick="nextSlide()">Next →</button>
+    <!-- SLIDE 5: DEPLOYMENT (THE ASK) -->
+    <section class="slide bg-gradient-4" id="slide-5">
+      <h2 class="text-5xl mb-4">Bella...</h2>
+      <h1 id="question-text" class="text-5xl md:text-8xl mb-12 px-2">
+        Will you be my Valentine?
+      </h1>
+
+      <div class="flex flex-col gap-6 items-center w-full">
+        <button
+          id="yes-button"
+          onclick="celebrate()"
+          class="bg-white text-rose-600 px-16 py-3 rounded-full text-4xl shadow-2xl active:scale-95 transition-all"
+        >
+          Yes
+        </button>
+        <button
+          id="no-button"
+          onmouseover="moveNo()"
+          onclick="moveNo()"
+          class="bg-white/10 text-white/50 px-8 py-2 rounded-full text-xl border border-white/20"
+        >
+          Error: Option Not Found
+        </button>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: SUCCESS -->
+    <section class="slide bg-love-red" id="slide-6">
+      <h1 class="text-8xl mb-4 animate-bounce">Yay! 🎉</h1>
+      <p class="text-4xl mb-8 px-4">
+        Patch Applied. I'm the luckiest guy on earth.
+      </p>
+      <div
+        class="bg-white p-6 rounded-[2rem] shadow-2xl text-black max-w-xs w-full"
+      >
+        <div class="border-4 border-double border-red-200 p-6 rounded-[1.5rem]">
+          <p class="text-2xl text-red-500 mb-1">Prescription For Bella</p>
+          <h3 class="text-4xl mb-2">The Perfect Date</h3>
+          <p class="text-xl mb-4 text-gray-500">Patient: Dave & Bella</p>
+          <div class="bg-gray-100 p-4 rounded-xl text-left mb-4">
+            <p class="text-xl">📍 Location: That place you love</p>
+            <p class="text-xl">⏰ Time: 7:00 PM</p>
+          </div>
+          <p class="text-lg italic opacity-70">
+            Note: Wear your favorite dress. You look incredible in it.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <button id="next-btn" onclick="nextSlide()">Analyze My Heart →</button>
 
     <script>
-        // --- LOADER LOGIC ---
-        const logs = [
-            "fetching_memories.json...",
-            "analyzing_smile_frequency...",
-            "calculating_heart_beats...",
-            "error: too_many_cute_moments.",
-            "optimizing_feelings...",
-            "ready_to_recap."
+      // --- 1. LOADER ---
+      const logs = [
+        { t: "Success: Initializing Heart_OS...", c: "text-green-400" },
+        { t: "Success: Finding Nurse_Bella.local...", c: "text-green-400" },
+        { t: "Warning: Pulse_Elevated in Dave.", c: "text-yellow-400" },
+        { t: "Error: Logic.sys has stopped working.", c: "text-red-500" },
+        { t: "Success: Love_Subroutine starting...", c: "text-green-400" },
+        { t: "System Ready.", c: "text-white" },
+      ];
+
+      let logIdx = 0;
+      function typeLog() {
+        if (logIdx < logs.length) {
+          const line = document.createElement("div");
+          line.className = "mb-1 " + logs[logIdx].c;
+          line.innerHTML = `> ${logs[logIdx].t}`;
+          document.getElementById("loading-text").appendChild(line);
+          logIdx++;
+          setTimeout(typeLog, 900);
+        } else {
+          setTimeout(
+            () => (document.getElementById("loader").style.display = "none"),
+            1000,
+          );
+        }
+      }
+      typeLog();
+
+      // --- 2. DECOR ---
+      function createItem() {
+        const container = document.getElementById("decor-bg");
+        const item = document.createElement("div");
+        item.className = "float-item";
+        item.innerHTML = ["❤️", "🩺", "🩹", "💻", "🌹", "✨"][
+          Math.floor(Math.random() * 6)
         ];
+        item.style.left = Math.random() * 100 + "vw";
+        item.style.fontSize = Math.random() * 20 + 20 + "px";
+        item.style.animationDuration = Math.random() * 3 + 5 + "s";
+        container.appendChild(item);
+        setTimeout(() => item.remove(), 6000);
+      }
+      setInterval(createItem, 500);
 
-        let logIndex = 0;
-        const logElement = document.getElementById('loading-text');
+      // --- 3. NAVIGATION ---
+      let currentSlide = 0;
+      const btnMessages = [
+        "Check Bug Report →",
+        "See Vitals →",
+        "Open Core Memories →",
+        "Emergency Fix →",
+        "Final Deployment →",
+      ];
 
-        function typeLog() {
-            if (logIndex < logs.length) {
-                logElement.innerHTML += `> ${logs[logIndex]}<br>`;
-                logIndex++;
-                setTimeout(typeLog, 400);
-            } else {
-                setTimeout(() => {
-                    document.getElementById('loader').style.display = 'none';
-                }, 800);
-            }
+      function nextSlide() {
+        if (currentSlide < 5) {
+          document
+            .getElementById(`slide-${currentSlide}`)
+            .classList.remove("active");
+          currentSlide++;
+          const nextSlideEl = document.getElementById(`slide-${currentSlide}`);
+          nextSlideEl.classList.add("active");
+          updateProgress();
+
+          if (currentSlide < 5) {
+            document.getElementById("next-btn").innerText =
+              btnMessages[currentSlide];
+          } else {
+            document.getElementById("next-btn").style.display = "none";
+          }
+
+          if (currentSlide === 2) animateVitals();
+          if (currentSlide === 4) {
+            nextSlideEl.classList.add("glitch-active");
+            setTimeout(
+              () => nextSlideEl.classList.remove("glitch-active"),
+              2500,
+            );
+          }
         }
-        typeLog();
+      }
 
-        // --- SLIDE NAVIGATION ---
-        let currentSlide = 0;
-        const totalSlides = 5;
-
-        function updateProgress() {
-            for (let i = 0; i < totalSlides; i++) {
-                const fill = document.getElementById(`fill-${i}`);
-                if (i < currentSlide) fill.classList.add('completed');
-                else if (i === currentSlide) fill.style.width = '100%';
-                else fill.style.width = '0%';
-            }
+      function updateProgress() {
+        for (let i = 0; i <= 5; i++) {
+          document.getElementById(`fill-${i}`).style.width =
+            i <= currentSlide ? "100%" : "0%";
         }
+      }
 
-        function nextSlide() {
-            if (currentSlide < 3) { // Only allow manual next up to the "Ask" slide
-                document.getElementById(`slide-${currentSlide}`).classList.remove('active');
-                currentSlide++;
-                document.getElementById(`slide-${currentSlide}`).classList.add('active');
-                updateProgress();
-            }
-            
-            // Hide next button on the "Ask" slide
-            if (currentSlide === 3) {
-                document.getElementById('next-btn').style.display = 'none';
-            }
-        }
-
-        // --- INTERACTIVE BUTTON LOGIC ---
-        let noClicks = 0;
-        let yesScale = 1;
-
-        function moveNo() {
-            const noBtn = document.getElementById('no-button');
-            const yesBtn = document.getElementById('yes-button');
-            
-            noClicks++;
-
-            // Random move
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-            noBtn.style.position = 'fixed';
-            noBtn.style.left = x + 'px';
-            noBtn.style.top = y + 'px';
-
-            // Grow Yes Button
-            yesScale += 0.4;
-            yesBtn.style.transform = `scale(${yesScale})`;
-
-            // Update text based on "No" attempts
-            const phrases = ["Are you sure?", "Really?", "Think again!", "You're clicking the wrong one!", "Give it a chance!", "Calculated mistake..."];
-            if (noClicks < phrases.length) {
-                document.getElementById('question-text').innerText = phrases[noClicks];
-            }
-
-            // After many attempts, the Yes button covers the screen
-            if (noClicks > 8) {
-                yesBtn.style.width = '100vw';
-                yesBtn.style.height = '100vh';
-                yesBtn.style.position = 'fixed';
-                yesBtn.style.top = '0';
-                yesBtn.style.left = '0';
-                yesBtn.style.borderRadius = '0';
-                yesBtn.style.display = 'flex';
-                yesBtn.style.alignItems = 'center';
-                yesBtn.style.justifyContent = 'center';
-            }
+      function animateVitals() {
+        const container = document.getElementById("ekg-line");
+        for (let i = 0; i < 15; i++) {
+          const bar = document.createElement("div");
+          bar.className = "bg-pink-500 w-full rounded-t-sm";
+          bar.style.height = "10%";
+          container.appendChild(bar);
+          setInterval(
+            () => {
+              bar.style.height = Math.random() * 90 + 10 + "%";
+            },
+            200 + Math.random() * 300,
+          );
         }
 
-        function celebrate() {
-            confetti({
-                particleCount: 200,
-                spread: 100,
-                origin: { y: 0.6 },
-                colors: ['#1DB954', '#ffffff', '#ff0000']
-            });
+        let bpm = 0;
+        const target = 148;
+        const intv = setInterval(() => {
+          if (bpm < target) {
+            bpm += 2;
+            document.getElementById("bpm-counter").innerText = bpm;
+          } else clearInterval(intv);
+        }, 30);
+      }
 
-            document.getElementById('slide-3').classList.remove('active');
-            document.getElementById('slide-4').classList.add('active');
-            currentSlide = 4;
-            updateProgress();
+      // --- 4. MEMORY STACK ---
+      let stackIdx = 0;
+      const cards = Array.from(document.querySelectorAll(".polaroid"));
+      const totalCards = cards.length;
+
+      function updateStack() {
+        cards.forEach((card, i) => {
+          const diff = i - stackIdx;
+          if (diff < 0) {
+            card.style.transform = "translateX(-150%) rotate(-20deg)";
+            card.style.opacity = "0";
+          } else {
+            card.style.transform = `translateY(${diff * -10}px) scale(${1 - diff * 0.05})`;
+            card.style.opacity = "1";
+            card.style.zIndex = totalCards - diff;
+          }
+        });
+      }
+      function nextCard() {
+        stackIdx = stackIdx < totalCards - 1 ? stackIdx + 1 : 0;
+        updateStack();
+      }
+      function prevCard() {
+        if (stackIdx > 0) {
+          stackIdx--;
+          updateStack();
         }
+      }
+      updateStack();
 
-        // Initialize progress
+      // --- 5. THE ASK ---
+      let noCount = 0;
+      function moveNo() {
+        const noBtn = document.getElementById("no-button");
+        const yesBtn = document.getElementById("yes-button");
+        noCount++;
+        noBtn.style.position = "fixed";
+        noBtn.style.left = Math.random() * 70 + "vw";
+        noBtn.style.top = Math.random() * 70 + "vh";
+        yesBtn.style.transform = `scale(${1 + noCount * 0.3})`;
+
+        const words = [
+          "Wait Bella...",
+          "Wrong Choice!",
+          "Nurse code says NO!",
+          "Dave is crying!",
+          "Try again!",
+        ];
+        document.getElementById("question-text").innerText =
+          words[Math.min(noCount, words.length - 1)];
+      }
+
+      function celebrate() {
+        confetti({
+          particleCount: 200,
+          spread: 100,
+          origin: { y: 0.6 },
+          colors: ["#ff4d6d", "#ffffff"],
+        });
+        document.getElementById("slide-5").classList.remove("active");
+        document.getElementById("slide-6").classList.add("active");
         updateProgress();
+      }
     </script>
-</body>
+  </body>
 </html>
